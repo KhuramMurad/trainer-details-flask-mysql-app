@@ -3,12 +3,24 @@ import os
 
 from flask import Flask, render_template, request, url_for
 from flask_mysqldb import MySQL
-from dotenv import load_dotenv
 from datetime import datetime
 from datetime import *
 import time as t
 
-load_dotenv()
+def load_env_file(path=".env"):
+    if not os.path.exists(path):
+        return
+
+    with open(path) as env_file:
+        for line in env_file:
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+
+            key, value = line.split("=", 1)
+            os.environ.setdefault(key.strip(), value.strip().strip('"').strip("'"))
+
+load_env_file()
 
 app = Flask(__name__)
 app.config["MYSQL_HOST"] = os.getenv("MYSQL_HOST", "localhost")
