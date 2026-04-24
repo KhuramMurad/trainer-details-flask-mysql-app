@@ -1,63 +1,86 @@
-
 import os
-
-from flask import Flask, render_template, request, url_for
-from flask_mysqldb import MySQL
 from datetime import datetime
-from datetime import *
-import time as t
 
-def load_env_file(path=".env"):
-    if not os.path.exists(path):
+from flask import Flask, render_template, request
+from flask_mysqldb import MySQL
+
+
+def load_env_file(file_path=".env"):
+    """Read database settings from a .env file, if that file exists."""
+    if not os.path.exists(file_path):
         return
 
-    with open(path) as env_file:
+    with open(file_path) as env_file:
         for line in env_file:
-            line = line.strip()
-            if not line or line.startswith("#") or "=" not in line:
+            clean_line = line.strip()
+
+            # Skip empty lines and notes that start with #.
+            if not clean_line or clean_line.startswith("#") or "=" not in clean_line:
                 continue
 
-            key, value = line.split("=", 1)
+            key, value = clean_line.split("=", 1)
             os.environ.setdefault(key.strip(), value.strip().strip('"').strip("'"))
 
+
+# Load settings like MYSQL_HOST and MYSQL_PASSWORD from the .env file.
 load_env_file()
 
+# Create the Flask app.
 app = Flask(__name__)
+
+# Tell Flask how to connect to the MySQL database.
+# If a setting is missing from .env, Flask will use the default value.
 app.config["MYSQL_HOST"] = os.getenv("MYSQL_HOST", "localhost")
 app.config["MYSQL_USER"] = os.getenv("MYSQL_USER", "mysql_user")
 app.config["MYSQL_PASSWORD"] = os.getenv("MYSQL_PASSWORD", "")
-app.config["MYSQL_DB"] = os.getenv("MYSQL_DB", "alnafi")  
+app.config["MYSQL_DB"] = os.getenv("MYSQL_DB", "alnafi")
 
+# Connect Flask to MySQL.
 mysql = MySQL(app)
 
-myhomepage = '!!!!!!!!!!!!!!!Landing Page!!!!!!!!!!!!!!!'
+home_page_message = "Welcome to the Trainer Details App"
+
 
 @app.route("/")
-def get_home(): 
-    return myhomepage
+def home():
+    """Show a simple home page message."""
+    return home_page_message
+
 
 @app.route("/trainer")
-def trainer():
+def show_trainer_form():
+    """Show the form where a user can type trainer details."""
     return render_template("trainer_details.html")
+
 
 @app.route("/trainer_create", methods=["POST"])
-def trainer_create():
-    fname_data = request.form["fname"]
-    lname_data = request.form["lname"]
-    design_data = request.form["design"]
-    course_data = request.form["course"]
-    sql = "INSERT INTO trainer_details (fname, lname, design, course, datetime) VALUES (%s, %s, %s, %s, %s)"
-    val = (fname_data, lname_data, design_data, course_data, datetime.now())
+def save_trainer_details():
+    """Save the trainer form data into the MySQL database."""
+    first_name = request.form["fname"]
+    last_name = request.form["lname"]
+    designation = request.form["design"]
+    course = request.form["course"]
 
-    cur = mysql.connection.cursor()
-    cur.execute(sql, val)
+    insert_query = """
+        INSERT INTO trainer_details (fname, lname, design, course, datetime)
+        VALUES (%s, %s, %s, %s, %s)
+    """
+    trainer_data = (
+        first_name,
+        last_name,
+        designation,
+        course,
+        datetime.now(),
+    )
+
+    # A cursor is like a helper that sends commands to MySQL.
+    cursor = mysql.connection.cursor()
+    cursor.execute(insert_query, trainer_data)
     mysql.connection.commit()
-    cur.close()
+    cursor.close()
 
     return render_template("trainer_details.html")
-    
 
- 
 
 if __name__ == "__main__":
-    app.run(debug=True,host='0.0.0.0')
+    app.run(debug=True, host="0.0.0.0")
