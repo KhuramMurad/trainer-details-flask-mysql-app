@@ -5,7 +5,7 @@
 <body>
     <h1>Trainer Details</h1>
 
-    <form method="post" action="/trainer_create">
+    <form method="post" action="{{ url_for('trainer_create') }}">
         <label>First Name</label>
         <input type="text" name="fname">
         <br><br>
