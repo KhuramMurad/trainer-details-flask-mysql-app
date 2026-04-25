@@ -140,13 +140,13 @@ CREATE USER 'mysql_user'@'%' IDENTIFIED BY 'strong_password_here';
 If the Flask app runs on the same Ubuntu VM as MySQL, use `localhost` instead:
 
 ```sql
-CREATE USER 'mysql_user'@'localhost' IDENTIFIED BY 'strong_password_here';
+CREATE USER 'mysql_user'@'%' IDENTIFIED BY 'strong_password_here';
 ```
 
-Grant the user access to the database:
+Grant the user access to the all databases:
 
 ```sql
-GRANT ALL PRIVILEGES ON alnafi.* TO 'mysql_user'@'%';
+GRANT ALL PRIVILEGES ON *.* TO 'mysql_user'@'%';
 FLUSH PRIVILEGES;
 ```
 
@@ -167,7 +167,7 @@ Create the table used by the Flask form:
 
 ```sql
 CREATE TABLE trainer_details (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    t_id INT AUTO_INCREMENT PRIMARY KEY,
     fname VARCHAR(100) NOT NULL,
     lname VARCHAR(100) NOT NULL,
     design VARCHAR(100) NOT NULL,
