@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trainer Details App</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 90%;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        p {
+            color: #666;
+            font-size: 1.2em;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .features {
+            margin-top: 40px;
+            text-align: left;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .feature {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+
+        .feature h3 {
+            color: #333;
+            margin-top: 0;
+        }
+
+        .feature p {
+            color: #666;
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏋️ Trainer Details App</h1>
+        <p>Welcome to the Trainer Details Management System. Easily store and manage trainer information with our secure MySQL-powered application.</p>
+
+        <a href="{{ url_for('trainer') }}" class="btn">Go to Trainer Form</a>
+
+        <div class="features">
+            <div class="feature">
+                <h3>📝 Easy Form Submission</h3>
+                <p>Simple and intuitive form to add trainer details</p>
+            </div>
+            <div class="feature">
+                <h3>🗄️ MySQL Database</h3>
+                <p>Secure storage of trainer information</p>
+            </div>
+            <div class="feature">
+                <h3>🚀 Fast & Reliable</h3>
+                <p>Built with Flask for optimal performance</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
