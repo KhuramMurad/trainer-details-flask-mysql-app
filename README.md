@@ -4,9 +4,36 @@ A small Flask app that stores trainer details in a MySQL database.
 
 ## Project Setup
 
+### System Dependencies
+
+Before installing Python packages, you need to install system dependencies required for `Flask-MySQLdb` (which depends on `mysqlclient`).
+
+#### On Linux (Ubuntu/Debian):
+```bash
+sudo apt update
+sudo apt install build-essential python3-dev libmysqlclient-dev pkg-config
+```
+
+#### On Linux (RHEL/CentOS/Fedora):
+```bash
+sudo yum install gcc python3-devel mysql-devel redhat-rpm-config  # or dnf on newer versions
+```
+
+#### On Windows:
+1. Download and install MySQL Connector/C from the official MySQL website: https://dev.mysql.com/downloads/connector/c/
+2. Ensure the MySQL bin directory is in your PATH, or set environment variables:
+   - `MYSQLCLIENT_CFLAGS` to include paths
+   - `MYSQLCLIENT_LDFLAGS` to link libraries
+   Alternatively, use a pre-compiled wheel or consider using `pymysql` instead of `mysqlclient` for easier installation.
+
+If you encounter issues installing `mysqlclient`, you can modify `requirements.txt` to use `pymysql` instead:
+- Replace `Flask-MySQLdb` with `Flask-MySQLdb[pymysql]` or use `pymysql` directly and update your Flask app configuration.
+
+### Python Environment Setup
+
 ```bash
 python -m venv .venv
-source .venv/bin/activate
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
